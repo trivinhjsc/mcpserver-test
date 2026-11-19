@@ -29,19 +29,20 @@ export class RulesTools {
       dir = dirname(dir);
     }
 
+    const errors: string[] = [];
     for (const base of baseDirs) {
       const candidate = join(base, relPath);
       try {
         await access(candidate);
         return await readFile(candidate, 'utf-8');
-      } catch {
-        // thử tiếp
+      } catch (e) {
+        errors.push(`${candidate}: ${(e as NodeJS.ErrnoException).code}`);
       }
     }
 
-    throw new Error(
-      'Không tìm thấy file rules.md. Đảm bảo resources/rules/rules.md tồn tại trong dự án.',
-    );
+    const detail = errors.join(' | ');
+    console.error('[get_rules] Tried paths:', detail);
+    throw new Error(`Không tìm thấy file rules.md. Tried: ${detail}`);
   }
 }
 
