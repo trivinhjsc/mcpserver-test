@@ -1,7 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { Tool } from '@nestjs/mcp';
-import { readFile } from 'node:fs/promises';
-import { join } from 'node:path';
+import { readFile, access } from 'node:fs/promises';
+import { join, dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 @Injectable()
 export class RulesTools {
@@ -16,18 +17,25 @@ export class RulesTools {
     },
   })
   async getRules(): Promise<string> {
-    // Khi build production: dist/resources/rules/rules.md
-    // Khi chạy dev (ts-node / watch): ../resources/rules/rules.md
-    const candidates = [
-      join(import.meta.dirname, 'resources', 'rules', 'rules.md'),
-      join(import.meta.dirname, '..', 'resources', 'rules', 'rules.md'),
-    ];
+    const relPath = join('resources', 'rules', 'rules.md');
 
-    for (const rulesPath of candidates) {
+    // Thử lần lượt các base dir theo thứ tự ưu tiên:
+    // 1. process.cwd() — project root (hoạt động trên Vercel: /var/task/)
+    // 2. Đi ngược từ file hiện tại lên (local dev & dist)
+    const baseDirs: string[] = [process.cwd()];
+    let dir = dirname(fileURLToPath(import.meta.url));
+    for (let i = 0; i < 6; i++) {
+      baseDirs.push(dir);
+      dir = dirname(dir);
+    }
+
+    for (const base of baseDirs) {
+      const candidate = join(base, relPath);
       try {
-        return await readFile(rulesPath, 'utf-8');
+        await access(candidate);
+        return await readFile(candidate, 'utf-8');
       } catch {
-        // thử path tiếp theo
+        // thử tiếp
       }
     }
 
