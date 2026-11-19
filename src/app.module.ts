@@ -3,6 +3,7 @@ import { AppController } from './app.controller.js';
 import { AppService } from './app.service.js';
 import { McpModule } from '@nestjs/mcp';
 import { HelloTools } from './hello.tools.js';
+import { RulesTools } from './rules.tools.js';
 
 @Module({
   imports: [
@@ -13,6 +14,6 @@ import { HelloTools } from './hello.tools.js';
     }),
   ],
   controllers: [AppController],
-  providers: [AppService, HelloTools],
+  providers: [AppService, HelloTools, RulesTools],
 })
 export class AppModule {}
