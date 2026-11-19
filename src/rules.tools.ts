@@ -4,9 +4,9 @@ import { readFile, access } from 'node:fs/promises';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-/** Tìm và đọc file trong resources/rules/ — hoạt động cả local lẫn Vercel */
-async function readRulesFile(filename: string): Promise<string> {
-  const relPath = join('resources', 'rules', filename);
+/** Tìm và đọc file trong resources/ — hoạt động cả local lẫn Vercel */
+async function readResourceFile(subDir: string, filename: string): Promise<string> {
+  const relPath = join('resources', subDir, filename);
 
   // process.cwd() = /var/task/ trên Vercel (project root)
   const baseDirs: string[] = [process.cwd()];
@@ -28,8 +28,8 @@ async function readRulesFile(filename: string): Promise<string> {
   }
 
   const detail = errors.join(' | ');
-  console.error(`[readRulesFile:${filename}] Tried paths:`, detail);
-  throw new Error(`Không tìm thấy ${filename}. Tried: ${detail}`);
+  console.error(`[readResourceFile:${subDir}/${filename}] Tried paths:`, detail);
+  throw new Error(`Không tìm thấy ${subDir}/${filename}. Tried: ${detail}`);
 }
 
 @Injectable()
@@ -43,7 +43,7 @@ export class RulesTools {
     annotations: { readOnlyHint: true },
   })
   getRules(): Promise<string> {
-    return readRulesFile('rules.md');
+    return readResourceFile('rules', 'rules.md');
   }
 
   @Tool({
@@ -54,7 +54,7 @@ export class RulesTools {
     annotations: { readOnlyHint: true },
   })
   getRulesExamples(): Promise<string> {
-    return readRulesFile('rules_examples.md');
+    return readResourceFile('rules', 'rules_examples.md');
   }
 
   @Tool({
@@ -65,6 +65,17 @@ export class RulesTools {
     annotations: { readOnlyHint: true },
   })
   getStateTemplate(): Promise<string> {
-    return readRulesFile('state_template.md');
+    return readResourceFile('rules', 'state_template.md');
+  }
+
+  @Tool({
+    name: 'get_context',
+    description:
+      'Trả về nội dung file hồ sơ vụ việc hiện tại (context.md). ' +
+      'Gọi tool này để đọc toàn bộ dữ liệu hồ sơ trước khi phân tích hoặc bổ sung thông tin.',
+    annotations: { readOnlyHint: true },
+  })
+  getContext(): Promise<string> {
+    return readResourceFile('state', 'context.md');
   }
 }
