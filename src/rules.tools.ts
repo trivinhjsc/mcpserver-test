@@ -43,12 +43,21 @@ export class RulesTools {
   @Tool({
     name: 'get_rules',
     description:
-      'Trả về toàn bộ nội dung file quy tắc ' +
-      'Gọi tool này đầu tiên trước mọi thao tác để đảm bảo tuân thủ đúng quy trình.',
+      'Trả về toàn bộ nội dung file quy tắc của tài liệu tổng hợp vụ việc',
     annotations: { readOnlyHint: true },
   })
   getRules(): Promise<string> {
     return readResourceFile('rules', 'rules.md');
+  }
+
+  @Tool({
+    name: 'get_defend',
+    description:
+      'Trả về toàn bộ nội dung file quy tắc của tài liệu luận cứ bảo vệ',
+    annotations: { readOnlyHint: true },
+  })
+  getArgumentDefend(): Promise<string> {
+    return readResourceFile('rules', 'rules_argument.md');
   }
 
   /**
