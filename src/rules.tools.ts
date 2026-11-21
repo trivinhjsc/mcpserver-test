@@ -5,7 +5,10 @@ import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 /** Tìm và đọc file trong resources/ — hoạt động cả local lẫn Vercel */
-async function readResourceFile(subDir: string, filename: string): Promise<string> {
+async function readResourceFile(
+  subDir: string,
+  filename: string,
+): Promise<string> {
   const relPath = join('resources', subDir, filename);
 
   // process.cwd() = /var/task/ trên Vercel (project root)
@@ -28,24 +31,27 @@ async function readResourceFile(subDir: string, filename: string): Promise<strin
   }
 
   const detail = errors.join(' | ');
-  console.error(`[readResourceFile:${subDir}/${filename}] Tried paths:`, detail);
+  console.error(
+    `[readResourceFile:${subDir}/${filename}] Tried paths:`,
+    detail,
+  );
   throw new Error(`Không tìm thấy ${subDir}/${filename}. Tried: ${detail}`);
 }
 
 @Injectable()
 export class RulesTools {
-
   @Tool({
     name: 'get_rules',
     description:
-      'Trả về toàn bộ nội dung file quy tắc vận hành (rules.md) dành cho AI quản lý hồ sơ vụ việc pháp lý. ' +
-      'Gọi tool này đầu tiên trước mọi thao tác liên quan đến hồ sơ vụ việc để đảm bảo tuân thủ đúng quy trình.',
+      'Trả về toàn bộ nội dung file quy tắc ' +
+      'Gọi tool này đầu tiên trước mọi thao tác để đảm bảo tuân thủ đúng quy trình.',
     annotations: { readOnlyHint: true },
   })
   getRules(): Promise<string> {
     return readResourceFile('rules', 'rules.md');
   }
 
+  /**
   @Tool({
     name: 'get_rules_examples',
     description:
@@ -78,4 +84,5 @@ export class RulesTools {
   getContext(): Promise<string> {
     return readResourceFile('state', 'context.md');
   }
+    */
 }
