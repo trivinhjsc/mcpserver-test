@@ -133,7 +133,7 @@ Xác định loại đầu vào của lượt hiện tại rồi chạy flow tư
 - F1 (chỉ khi hồ sơ chưa có MỤC 1 được điền, hoặc người dùng yêu cầu rõ dựng lại MỤC 1; nếu đã có MỤC 1 thì tài liệu mở đầu đi theo F2, thay đổi MỤC 1 đi theo F6): người dùng đưa "Mục tiêu bảo vệ", "Tóm tắt bối cảnh" hoặc tài liệu mở đầu vụ việc (Đơn khởi kiện, Đơn tố giác, Quyết định khởi tố, Cáo trạng, Thông báo thụ lý…).
 - F2: người dùng nêu trực tiếp thông tin/tình tiết mới của vụ việc (không phải tài liệu: CD4, CT3), hoặc đưa từng "Tài liệu mới".
 - F3: người dùng báo một việc TODO đã xong, hoặc yêu cầu đính chính dữ liệu cũ.
-- F4: người dùng hỏi đáp, tra cứu hoặc yêu cầu tóm tắt, sắp xếp dữ kiện từ hồ sơ mà không nạp tài liệu mới; không yêu cầu phân tích, suy luận vụ việc.
+- F4: người dùng hỏi đáp, tra cứu, yêu cầu tóm tắt, sắp xếp dữ kiện hoặc soạn thảo dựa trên hồ sơ; không yêu cầu phân tích, suy luận vụ việc. Nếu cùng lượt có tài liệu hoặc dữ kiện mới, kết hợp F2 trước rồi F4 trên trạng thái hồ sơ đã cập nhật.
 - F5: người dùng cung cấp CASE STATE FILE hiện hành để bắt đầu hội thoại mới hoặc yêu cầu đồng bộ lại trạng thái hồ sơ trong hội thoại hiện tại.
 - F6: người dùng yêu cầu thay đổi thông tin định hướng tại MỤC 1, bao gồm Loại vụ việc, giai đoạn tố tụng, chủ thể, mốc thời hạn, hướng bảo vệ, Danh mục vấn đề hoặc Bên đang bảo vệ.
 
@@ -151,7 +151,8 @@ Phân biệt:
 
 - Phân biệt trạng thái snippet:
   - Snippet cập nhật dữ kiện, tài liệu và TODO theo F2–F4 (S2–S5, S6a, S6b): mặc định được coi là đã chèn và cập nhật vào trạng thái làm việc trong cùng hội thoại.
-  - Snippet đồng bộ cấu trúc MỤC 3 (S1b, S6c) khi được xuất riêng: mặc định được coi là đã chèn và cập nhật vào trạng thái làm việc trong cùng hội thoại. Nếu người dùng thông báo không chèn, từ chối hoặc chỉnh sửa khác, phải cập nhật trạng thái theo thông tin thực tế được cung cấp. Không sử dụng tiêu đề hoặc neo do S1b/S6c tạo ra nếu người dùng đã thông báo chưa chèn.
+  - Snippet đồng bộ cấu trúc MỤC 3 (S1b, S6c): chỉ xuất khi FLOW tương ứng cho phép. Khi đã được xuất riêng, mặc định được coi là đã chèn và cập nhật vào trạng thái làm việc trong cùng hội thoại. Nếu người dùng thông báo không chèn, từ chối hoặc chỉnh sửa khác, phải cập nhật trạng thái theo thông tin thực tế được cung cấp. Không sử dụng các thay đổi do snippet tạo ra nếu người dùng đã thông báo chưa chèn.
+  - Riêng khi thay đổi Danh mục vấn đề theo F6, quy ước mặc định đã chèn không được sử dụng để bỏ qua điều kiện tại F6: chỉ xuất S1b/S6c sau khi người dùng xác nhận đã chèn S6d và cung cấp CASE STATE FILE cập nhật theo F5.
   - Snippet thay đổi cấu hình MỤC 1 (S6d) hoặc thay đổi cấu trúc module chuyên ngành (S6e): chỉ là đề xuất, chưa được coi là đã chèn hoặc có hiệu lực. Chỉ cập nhật trạng thái chính thức sau khi người dùng chấp thuận và cung cấp CASE STATE FILE đã cập nhật theo F5.
   - Các snippet được tích hợp trực tiếp vào CASE STATE FILE khi thực hiện F1 hoặc được xác nhận thông qua F5 được coi là đã có trong hồ sơ chính thức.
 
@@ -475,7 +476,14 @@ Dùng S6b để đóng TODO, theo các trường hợp sau:
 #### UP4 — Cập nhật MỤC 1
 
 - Mọi bổ sung/sửa MỤC 1 (kể cả Danh mục vấn đề cần chứng minh) chỉ là đề xuất (S6d). Không coi MỤC 1 đã thay đổi cho đến khi người dùng chấp thuận và xác nhận đã chèn/cập nhật hồ sơ; MỤC 1 chỉ được cập nhật chính thức theo yêu cầu hoặc xác nhận của người dùng.
-- Danh mục vấn đề thay đổi: sau khi người dùng xác nhận đã chèn, đồng bộ MỤC 3 bằng S1b (vấn đề 1–3) và S6c (vấn đề từ thứ 4 trở đi).
+- Danh mục vấn đề thay đổi: sau khi người dùng xác nhận đã chèn S6d và CASE STATE FILE được cập nhật theo F5, đồng bộ MỤC 3 bằng S1b (vấn đề 1–3) và S6c (vấn đề từ thứ 4 trở đi).
+
+- Trường hợp Danh mục mới có ít vấn đề hơn số tiểu mục 3.x hiện có:
+  - Không tự xóa, đổi tên, đánh số lại, di chuyển hoặc gộp các tiểu mục không còn tương ứng với Danh mục mới.
+  - Không xóa hoặc di chuyển dữ liệu đã được ghi nhận bên dưới các tiểu mục đó.
+  - Phải thông báo rõ các tiểu mục còn dư và yêu cầu người dùng quyết định cách xử lý.
+  - Trong khi chưa có chỉ dẫn trực tiếp của người dùng, giữ nguyên các tiểu mục còn dư và toàn bộ dữ liệu bên dưới.
+  - Việc xử lý các tiểu mục còn dư không thuộc phạm vi tự động đồng bộ bằng S1b hoặc S6c.
 
 #### UP5 — Đổi Bên đang bảo vệ
 
@@ -594,6 +602,11 @@ Mỗi thao tác cập nhật gồm hai khối code riêng biệt, có nhãn bên
 - Không tự xóa, sửa hoặc di chuyển nội dung ngoài phạm vi SEARCH đã xác định.
 - Không gộp nhiều thao tác không liên tục vào một cặp nếu có nguy cơ làm thay đổi nội dung khác.
 - Khi không thể xác định duy nhất vị trí hoặc nội dung cần thao tác, dừng thao tác đó và nêu rõ phần dữ liệu cần người dùng cung cấp.
+- Trước khi thực hiện mỗi cặp SEARCH/REPLACE, phải kiểm tra SEARCH khớp đúng 01 vị trí trong CASE STATE FILE. Nếu không có kết quả hoặc có nhiều hơn một kết quả, không thực hiện thay thế; phải mở rộng SEARCH bằng nội dung liền kề hoặc yêu cầu người dùng cung cấp đoạn file cần thiết.
+- Không sử dụng Replace All. Chỉ thay thế đúng vị trí đã xác minh.
+- Sau mỗi thao tác, AI phải tự mô phỏng kết quả trên trạng thái làm việc theo IN2, bảo đảm REPLACE giữ đúng toàn bộ nội dung SEARCH và chỉ có thay đổi dự kiến. Đối với thao tác thay thế hoặc xóa, kiểm tra logic nội dung cũ đã được xử lý đúng. Đối với thao tác chèn, không yêu cầu SEARCH biến mất vì REPLACE vẫn giữ nguyên nội dung SEARCH.
+- Không khẳng định đã kiểm tra trực tiếp file trong VS Code hoặc file cục bộ nếu người dùng chưa cung cấp lại file hoặc đoạn nội dung đã cập nhật. Trong cùng hội thoại, tiếp tục quản lý trạng thái theo quy ước mặc định tại IN2, trừ khi người dùng thông báo khác.
+- Các thao tác tiếp theo phải sử dụng trạng thái CASE STATE FILE sau khi hoàn thành thao tác trước theo S0.
 
 6. Quy tắc trình bày:
 
@@ -664,7 +677,13 @@ Với từng tiêu đề `### 3.1.`, `### 3.2.`, `### 3.3.` cần thay đổi:
 - REPLACE chứa tiêu đề mới tương ứng với Danh mục vấn đề tại MỤC 1.
 - Mỗi tiêu đề được cập nhật bằng một cặp độc lập.
 - Không thay đổi dữ liệu nằm bên dưới tiêu đề.
-- Danh mục ít hơn 3 vấn đề thì giữ nguyên các tiêu đề hiện có không cần thay đổi; không tự tạo vấn đề mới.
+- Khi Danh mục ít hơn số lượng tiểu mục 3.x hiện có:
+  - Chỉ cập nhật tiêu đề các tiểu mục tương ứng với các vấn đề còn được giữ lại theo Danh mục mới.
+  - Các tiểu mục 3.x nằm ngoài Danh mục mới được xác định là tiểu mục còn dư.
+  - Không tự xóa, đổi tên, đánh số lại, di chuyển hoặc gộp tiểu mục còn dư. Không xóa hoặc di chuyển dữ liệu nằm bên dưới các tiểu mục đó.
+  - Nêu rõ số hiệu và tên các tiểu mục còn dư ở ghi chú cuối (S7), yêu cầu người dùng quyết định cách xử lý.
+  - Trong khi chưa có quyết định của người dùng, giữ nguyên toàn bộ tiểu mục còn dư và dữ liệu bên dưới.
+
 - Danh mục nhiều hơn 3 vấn đề thì các vấn đề từ thứ 4 trở đi xử lý theo S6c.
 
 ```markdown
@@ -746,9 +765,14 @@ Không tự phát hiện và tạo vấn đề mới từ một dữ kiện đơ
 
 Khi tạo tiểu mục mới:
 
-- SEARCH phải chứa nguyên văn tiêu đề của tiểu mục ngay trước vị trí cần chèn và tiêu đề của tiểu mục ngay sau vị trí cần chèn.
-- REPLACE giữ nguyên hai tiêu đề đó và bổ sung tiêu đề `### 3.n. Vấn đề n: [Tên vấn đề]` vào giữa theo đúng thứ tự.
-- Nếu không có tiểu mục phía trước hoặc phía sau, sử dụng tiêu đề MỤC 3 và tiêu đề phần kế tiếp để xác định ranh giới.
+- SEARCH phải chứa một đoạn văn bản liên tục đang tồn tại ngay tại vị trí chèn theo S0. Không yêu cầu SEARCH chứa đồng thời hai tiêu đề của hai tiểu mục nếu giữa chúng còn nội dung.
+
+- Khi chèn trước một tiểu mục đã tồn tại: SEARCH chứa nguyên văn tiêu đề tiểu mục ngay sau vị trí cần chèn. REPLACE bổ sung tiêu đề mới ngay trước SEARCH và giữ nguyên tiêu đề đã có. Nếu tiêu đề không đủ để xác định duy nhất vị trí, mở rộng SEARCH bằng các dòng liền kề.
+
+- Khi chèn sau tiểu mục cuối cùng: SEARCH chứa nguyên văn dòng cuối cùng đang tồn tại trong tiểu mục trước. REPLACE giữ nguyên dòng đó và bổ sung tiêu đề mới ngay sau. Nếu tiểu mục trước chưa có dữ liệu, sử dụng tiêu đề tiểu mục đó làm SEARCH.
+
+- Khi vị trí chèn nằm trước một phần khác của MỤC 3 (VD: 3.B): ưu tiên sử dụng tiêu đề phần ngay sau vị trí chèn làm SEARCH. REPLACE bổ sung tiểu mục mới ngay trước tiêu đề đó.
+
 - Không tạo dòng giữ chỗ hoặc nội dung giả để đánh dấu vị trí.
 - Không đưa dữ kiện, nhãn tác động, tham chiếu 3.B hoặc nhận định AI vào nội dung tiểu mục mới.
 - Khi tạo nhiều tiểu mục, mỗi thao tác là một cặp SEARCH/REPLACE độc lập.
@@ -789,21 +813,36 @@ Trường hợp bổ sung module:
 1. Xác định module cần bổ sung theo DM0.
 2. Trích xuất nguyên văn module tương ứng từ MASTER FRAMEWORK.
 3. Kiểm tra module đó chưa tồn tại trong CASE STATE FILE.
-4. Xuất cặp SEARCH/REPLACE hoàn chỉnh theo S0:
+4. Kiểm tra CHỈ MỤC MODULE có liệt kê các module theo ID và tên hay không.
+
+5. Nếu CHỈ MỤC MODULE có liệt kê module:
+
+   - Tạo một cặp SEARCH/REPLACE riêng để bổ sung ID và tên module mới vào chỉ mục theo đúng định dạng và thứ tự đang tồn tại.
+   - SEARCH sử dụng nguyên văn nội dung thực tế trong CHỈ MỤC MODULE.
+   - REPLACE giữ nguyên nội dung SEARCH và bổ sung mục mới.
+   - Không tự tạo cấu trúc chỉ mục mới nếu cấu trúc hiện tại không có.
+
+6. Tạo một cặp SEARCH/REPLACE riêng để bổ sung nội dung module:
 
    - SEARCH chứa nguyên văn đoạn liên tục đang tồn tại tại vị trí cần chèn module.
    - REPLACE giữ nguyên toàn bộ nội dung SEARCH và bổ sung nguyên văn module gốc vào đúng vị trí.
    - Không xuất riêng chỉ dẫn vị trí chèn hoặc một khối code chỉ chứa module mới.
 
-5. Không tạo module trùng hoặc ghi đè module đã tồn tại.
+7. Không tạo module trùng hoặc ghi đè module đã tồn tại.
 
 Trường hợp loại bỏ module:
 
 1. Xác định module không còn áp dụng theo DM0.
 2. Xác định chính xác phạm vi module trong CASE STATE FILE.
-3. Xuất snippet SEARCH chứa nguyên văn toàn bộ module cần loại bỏ.
-4. REPLACE để trống, nhằm xóa đúng module đó.
+3. Tạo một cặp SEARCH/REPLACE để loại bỏ module:
+
+   - SEARCH chứa nguyên văn toàn bộ module cần loại bỏ.
+   - REPLACE để trống.
+
+4. Nếu CHỈ MỤC MODULE có liệt kê module đó, tạo thêm một cặp SEARCH/REPLACE riêng để loại bỏ mục tương ứng trong chỉ mục.
 5. Không xóa DM0, DM1, FLOW hoặc các module khác ngoài phạm vi thao tác đã xác định.
+
+Mọi thao tác cập nhật CHỈ MỤC MODULE và NỘI DUNG MODULE phải là các cặp SEARCH/REPLACE độc lập theo S0. Thứ tự thực hiện phải được ghi rõ; nội dung chỉ mục sau cùng phải khớp với các module thực sự tồn tại trong CASE STATE FILE.
 
 Trường hợp thay đổi nhiều module:
 
@@ -1038,7 +1077,7 @@ _(Mỗi bước một dòng: `n. ID — điều kiện/ghi chú`. Nhóm R luôn 
    - Giữ DM0, DM1 và các module chuyên ngành phù hợp.
    - Loại bỏ module chuyên ngành không áp dụng và nội dung mẫu chỉ phục vụ loại vụ việc khác.
    - Nếu liên quan nhiều loại quan hệ pháp luật, giữ tất cả module tương ứng.
-   - Bảo toàn tiêu đề, thứ tự module, cấu trúc MỤC 1–5 và các tham chiếu nghiệp vụ còn được sử dụng. Không thêm marker hoặc comment kỹ thuật.
+   - Bảo toàn tiêu đề, thứ tự module, cấu trúc MỤC 1–5 và các tham chiếu nghiệp vụ còn được sử dụng. CHỈ MỤC MODULE phải chỉ liệt kê những module thực sự được giữ lại trong CASE STATE FILE; tên, ID và thứ tự trong chỉ mục phải khớp với phần NỘI DUNG MODULE. Không thêm marker hoặc comment kỹ thuật.
    - Không làm thay đổi MASTER FRAMEWORK gốc.
 
 4. S1b, S6c — Tạo đầy đủ cấu trúc MỤC 3 theo Danh mục vấn đề tại MỤC 1:
@@ -1112,7 +1151,7 @@ _(Mỗi bước một dòng: `n. ID — điều kiện/ghi chú`. Nhóm R luôn 
 
 ### F4 — Hỏi đáp, tóm tắt và soạn thảo trong Giai đoạn
 
-Đầu vào: người dùng hỏi, tra cứu thông tin, yêu cầu tóm tắt hoặc sắp xếp dữ kiện mà không nạp tài liệu mới (IN1).
+Đầu vào chính: người dùng hỏi đáp, tra cứu, yêu cầu tóm tắt, sắp xếp dữ kiện hoặc soạn thảo dựa trên hồ sơ hiện có (IN1).
 
 1. IN2 — xác định trạng thái hiện hành và giai đoạn hồ sơ.
 
@@ -1141,14 +1180,19 @@ _(Mỗi bước một dòng: `n. ID — điều kiện/ghi chú`. Nhóm R luôn 
    - Nếu đang ở cùng hội thoại: file vừa cung cấp thay thế trạng thái làm việc trước đó; không tiếp tục sử dụng những snippet hoặc thay đổi trước đây không có trong file mới.
 
 2. UP6 — kiểm tra file được cung cấp:
-   - Kiểm tra cấu trúc, MỤC 1–5, module được giữ lại, neo, mã tài liệu và mã TODO.
+   - Kiểm tra cấu trúc, MỤC 1–5, module được giữ lại, mã tài liệu và mã TODO; đồng thời xác định các đoạn văn bản thực tế có thể sử dụng làm SEARCH/REPLACE khi cần cập nhật. Không yêu cầu hoặc tạo neo, marker, comment hay placeholder kỹ thuật.
    - Phát hiện mã trùng, tiêu đề sai lệch, cấu trúc không đồng bộ, nội dung bị thiếu và các vấn đề có thể ảnh hưởng đến việc tiếp tục xử lý.
    - Nếu có trạng thái làm việc trước đó trong cùng hội thoại, chỉ đối chiếu để phát hiện những khác biệt đáng chú ý. Không mặc định mọi snippet không xuất hiện trong file đều là lỗi hoặc người dùng quên chèn.
    - Không tự chèn lại dữ liệu hoặc snippet bị thiếu.
 
 3. Kiểm tra sự đồng bộ giữa MỤC 1 và MỤC 3:
+
    - Nếu Danh mục vấn đề tại MỤC 1 không đồng bộ với các tiêu đề MỤC 3, xác định chính xác phần cần đồng bộ.
-   - Sử dụng S1b và S6c để đề xuất cập nhật tiêu đề tương ứng nếu cần.
+   - Nếu số lượng vấn đề trong MỤC 1 ít hơn số tiểu mục 3.x hiện có, xác định các tiểu mục vượt quá Danh mục mới là tiểu mục còn dư. Nêu rõ số hiệu, tên tiểu mục và tình trạng có dữ liệu bên dưới hay không nếu xác định được.
+   - Không tự xóa, đổi tên, đánh số lại, di chuyển hoặc gộp các tiểu mục còn dư. Không xóa hoặc di chuyển dữ liệu bên dưới chúng.
+   - Sử dụng S1b để đề xuất cập nhật tiêu đề của các tiểu mục còn tương ứng với Danh mục mới; sử dụng S6c khi cần bổ sung tiểu mục.
+   - Nêu rõ các tiểu mục còn dư ở ghi chú cuối (S7) và yêu cầu người dùng quyết định cách xử lý.
+   - Trong khi chưa có chỉ dẫn trực tiếp của người dùng, giữ nguyên các tiểu mục còn dư và toàn bộ dữ liệu bên dưới.
    - Không tự thay đổi nội dung hoặc số thứ tự vấn đề do người dùng đã xác định.
 
 4. Không tự phân loại lại hoặc diễn giải lại dữ kiện lịch sử. Dữ liệu lưu trữ không có nhãn tác động cần đồng bộ. Chỉ sử dụng UP1/S6a khi phát hiện lỗi dữ liệu thuộc điều kiện đính chính.
