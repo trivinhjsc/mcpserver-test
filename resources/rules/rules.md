@@ -279,7 +279,11 @@ Với cùng một chủ thể, luôn ghi rõ thời điểm và giai đoạn c�
 #### EX6 — Đối chiếu mâu thuẫn
 
 - Chỉ kết luận "có sự khác biệt"; không tự xác định nội dung nào đúng khi chưa có chứng cứ đối chiếu.
-- Tài liệu mới mâu thuẫn với dòng đã có (kể cả khi dòng cũ là thông tin người dùng cung cấp, hoặc khi tài liệu mới xác nhận thông tin đó): giữ nguyên nội dung mà từng tài liệu đã ghi nhận, tạo thêm dòng `[Ghi nhận sự khác biệt]` (hoặc dòng xác nhận); không đề xuất thay thế dòng cũ. VD: lời khai năm 2020 và lời khai năm 2022 của cùng một người đều là dữ kiện lịch sử, cả hai cùng được lưu giữ.
+- Tài liệu mới có nội dung mâu thuẫn với dữ kiện đã ghi: giữ nguyên cả hai nguồn; tạo dòng `[Ghi nhận sự khác biệt]` mô tả chính xác nội dung khác nhau và dẫn nguồn từng phía. Không đề xuất thay thế dòng cũ.
+
+- Tài liệu mới độc lập xác nhận một dữ kiện đã có: ghi nhận nguồn xác nhận riêng bằng nhãn `[Tài liệu ghi nhận]` hoặc `[Kết luận/ghi nhận của CQ có thẩm quyền]` phù hợp. Không sử dụng nhãn `[Ghi nhận sự khác biệt]` nếu không có nội dung khác biệt.
+
+- Nếu tài liệu mới chỉ là bản sao, bản chính/bản sao, bản có dấu/bản không dấu hoặc bản trùng nội dung thuộc trường hợp IN3: áp dụng IN3, không mặc nhiên cấp mã hoặc tạo dòng xác nhận mới. Chỉ ghi nhận thêm khi có khác biệt về nguồn gốc hoặc thông tin truy xuất mà người dùng quyết định cần lưu.
 - Dữ kiện còn phụ thuộc điều kiện chưa xác minh (VD: chỉ trùng họ tên): viết dạng "nếu người ký là…" và đưa việc xác minh vào MỤC 4 (RT6).
 
 #### EX7 — Mốc thời gian
@@ -418,16 +422,19 @@ TODO phát sinh từ CT1/CT4 (nếu có) vẫn được lập theo RT6. Tài li�
 
 #### UP1 — Đính chính lỗi dữ liệu đã ghi
 
-Chỉ dùng S6a để thay một dòng đã tồn tại khi phát hiện lỗi dữ liệu đã được xác định rõ:
+Sai vị trí chèn không phải lỗi nội dung và không được xử lý bằng S6a.
 
-1. Sai nội dung trích xuất so với tài liệu gốc.
-2. Sai mã tài liệu hoặc mã tham chiếu.
-3. Sai số trang, ngày tháng hoặc mốc thời gian.
-4. Sai vị trí chèn hoặc sai định dạng làm thay đổi nội dung dữ liệu.
+Khi phát hiện dòng bị chèn sai vị trí theo RT5:
 
-Không sử dụng S6a để phân loại lại Có lợi / Bất lợi / Trung lập, không thay đổi cách diễn giải dữ kiện và không cập nhật dòng cũ theo suy luận mới của AI.
+- Xuất 02 cặp SEARCH/REPLACE độc lập:
+  1. Cặp thứ nhất: SEARCH chứa nguyên văn dòng dữ kiện tại vị trí sai; REPLACE để trống.
+  2. Cặp thứ hai: SEARCH chứa nguyên văn một dòng hoặc đoạn văn bản đang tồn tại tại vị trí cần chuyển đến; REPLACE giữ nguyên toàn bộ nội dung SEARCH và chèn nguyên văn dòng dữ kiện cần di chuyển vào trước hoặc sau vị trí đó theo RT5.
 
-Dòng thay thế phải kết thúc bằng cờ `[Đã đính chính: lý do ngắn]` để giữ dấu vết lịch sử. Ngoài các trường hợp đính chính sai sót dữ liệu trên không được thay dòng cũ (R6).
+- SEARCH phải đủ cụ thể để xác định duy nhất vị trí cần thao tác. Nếu nội dung trùng lặp, mở rộng SEARCH bằng các dòng liền kề để phân biệt.
+- Giữ nguyên tuyệt đối nội dung, nhãn bản chất, nguồn và mã tài liệu.
+- Không tạo thêm bản dữ kiện thứ hai.
+- Không sử dụng S6a vì đây không phải lỗi dữ liệu.
+- Ghi rõ thứ tự thực hiện hai cặp SEARCH/REPLACE.
 
 #### UP2 — Văn bản sửa đổi / thay thế / đính chính tài liệu trước
 
@@ -519,6 +526,14 @@ Cách trình bày theo WR1.
 - Bên trong khối code chỉ chứa các dòng danh sách (gạch đầu dòng `- `, kể cả lồng nhau; hoặc danh sách đánh số `1.` lồng bên dưới một gạch đầu dòng, như ở S1 và S6d); không dùng bảng; không đưa thẻ `<!-- ... -->` hoặc tiêu đề mục (ngoại lệ duy nhất: S1b và S6c).
 - Chỉ xuất mảnh mới: không in lại khung hồ sơ, không lặp lại dòng đã có (R4). Mục nào không phát sinh dữ liệu mới thì bỏ qua hoàn toàn (không gọi tên mục, không tạo khối code trống).
 - Trong các mẫu bên dưới, `dd/mm/yyyy` chỉ là ký hiệu mẫu; quy tắc ngày: CT3.
+  S6e và thao tác di chuyển dòng do sai vị trí chèn theo UP1 là ngoại lệ định dạng của S0: sử dụng các cặp SEARCH/REPLACE riêng.
+
+Với thao tác di chuyển dòng:
+
+- Cặp 1: SEARCH dòng tại vị trí sai; REPLACE để trống.
+- Cặp 2: SEARCH đoạn văn bản đang tồn tại tại vị trí đúng; REPLACE giữ nguyên đoạn SEARCH và bổ sung dòng cần di chuyển.
+
+Không tạo thêm neo HTML hoặc placeholder để định vị. Nội dung SEARCH phải tự đảm nhiệm việc xác định vị trí thao tác.
 
 #### S1 — Vị trí 1: khối MỤC 1
 
@@ -572,7 +587,7 @@ Chỉ xuất ở F1, khi người dùng xác nhận đã cập nhật Danh mục
 Chèn vào MỤC 2; vị trí chèn theo RT5. Chỉ ghi nội dung và nguồn, không đánh giá tác động của sự kiện.
 
 ```markdown
-- **[Mốc thời gian | Loại mốc] [Nhóm] Tên sự kiện:** [Bản chất thông tin] Nội dung được ghi nhận: ... — `[Mã TL, tr.x]` hoặc `[Người dùng cung cấp, dd/mm/yyyy]`.
+- **[Mốc thời gian | Loại mốc] Tên sự kiện:** [Bản chất thông tin] Nội dung được ghi nhận: ... — `[Mã TL, tr.x]` hoặc `[Người dùng cung cấp, dd/mm/yyyy]`.
 ```
 
 #### S3 — Vị trí 3: dòng MỤC 3 (3.A, 3.x, 3.B, Tham chiếu 3.B)
@@ -601,7 +616,7 @@ Chèn vào MỤC 5.x, ngay trên neo của nhóm tương ứng (L9). Lập dòng
 - **[Mã TL]** (dd/mm/yyyy, ban hành/lập) **Tên văn bản & Số hiệu - Chủ thể (Dạng tài liệu; Quy mô trang; Tệp nguồn & dải trang PDF; BL nếu có; Nguồn cung cấp nếu quan trọng; Giao nhận dd/mm/yyyy nếu có):** Tóm tắt tối đa 1 câu ngắn.
 ```
 
-#### S6a — Vị trí 6a: đính chính / phân loại lại một dòng cũ
+#### S6a — Vị trí 6a: đính chính lỗi dữ liệu một dòng cũ
 
 Chỉ dùng khi đúng điều kiện UP1.
 
@@ -697,7 +712,16 @@ Trường hợp thay đổi nhiều module:
 - Mọi thao tác S6e đều phải ghi rõ **ĐỀ XUẤT – CHƯA CẬP NHẬT**.
 - Chỉ cập nhật trạng thái chính thức khi người dùng chấp thuận và cung cấp CASE STATE FILE đã chỉnh sửa theo F5.
 
-S6e là ngoại lệ định dạng của S0: sử dụng cặp khối code SEARCH và REPLACE riêng; REPLACE được phép để trống khi xóa module.
+S6e và thao tác di chuyển dòng do sai vị trí chèn theo UP1 là ngoại lệ định dạng của S0: sử dụng các cặp khối code SEARCH và REPLACE riêng.
+
+Với thao tác di chuyển dòng, phải xuất hai cặp độc lập:
+
+- Cặp 1: xóa dòng tại vị trí sai.
+- Cặp 2: chèn nguyên văn dòng đó tại vị trí đúng.
+
+REPLACE được phép để trống khi xóa dòng. Khi chèn, REPLACE phải giữ nguyên đoạn SEARCH và bổ sung dòng cần chèn.
+
+Mọi thao tác phải có chỉ dẫn vị trí và thứ tự thực hiện rõ ràng.
 
 #### S7 — Ghi chú cuối
 
@@ -763,7 +787,11 @@ Chỉ sử dụng khi thực hiện tổng hợp, phân tích tại F7 theo EX3.
 
 #### L5 — Nhãn bản chất thông tin
 
-Đặt ở vị trí `[Bản chất | Tác động]` của dòng dữ kiện (cách gắn: EX4).
+Đặt ở vị trí `[Bản chất thông tin]` của dòng dữ kiện theo khuôn S2/S3 (cách gắn: EX4).
+
+Trong Giai đoạn 1, mỗi dòng dữ kiện chỉ sử dụng một nhãn bản chất phù hợp; không gắn nhãn tác động.
+
+Ở F7, nhãn tác động chỉ được sử dụng trong phần phân tích bằng văn xuôi theo EX3, không chèn vào các dòng dữ kiện MỤC 1–5.
 
 Năm nhãn bản chất:
 
@@ -933,7 +961,14 @@ _(Mỗi bước một dòng: `n. ID — điều kiện/ghi chú`. Nhóm R luôn 
 
 Đầu vào: từng tài liệu mới (IN1). Đầu vào là thông tin người dùng nêu trực tiếp (không phải tài liệu): bỏ các bước ghi "(chỉ tài liệu)", không cấp mã (CD4), ghi nguồn theo CT3.
 
-1. IN2 — chốt trạng thái hiện hành (snippet chưa xác nhận chỉ dùng để đánh số và báo trùng).
+1. IN2 — chốt trạng thái hiện hành: áp dụng đúng quy ước tại IN2.
+
+- Snippet cập nhật thông thường S2–S5, S6a, S6b được tính là đã chèn vào trạng thái làm việc, trừ khi người dùng từ chối hoặc thông báo không chèn.
+
+- Snippet S6d, S6e chưa được người dùng chấp thuận chỉ được theo dõi như đề xuất, không tính là dữ liệu hoặc cấu trúc đã cập nhật.
+
+- Việc đánh số mã và kiểm tra trùng phải căn cứ vào trạng thái snippet tương ứng theo IN2.
+
 2. IN3 — (chỉ tài liệu) trùng → báo ở ghi chú cuối (S7), không nạp lại phần trùng.
 3. IN4 — xác định thông tin MỤC 1 và Bên đang bảo vệ nếu đã có; thiếu thông tin thì ghi nhận trạng thái chưa xác định, vẫn tiếp tục lưu trữ dữ kiện, không dừng F2.
 4. CD1 — (chỉ tài liệu) xác định đơn vị cấp mã và ranh giới văn bản; PDF ghép không phân biệt được ranh giới → hỏi theo IN5, dừng.
