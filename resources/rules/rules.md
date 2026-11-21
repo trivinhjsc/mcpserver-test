@@ -68,7 +68,13 @@ File này là KHUNG HỒ SƠ DÙNG CHUNG (MASTER SCHEMA & STATE FILE) cho mọi 
 - Không xóa neo `<!-- ... -->` (bản đồ neo: L9).
 - Mỗi file hồ sơ chỉ có một Bên đang bảo vệ (một bên có thể gồm nhiều người có lợi ích thống nhất). Nếu người dùng nêu bảo vệ nhiều người có lợi ích có thể xung đột, không gộp chung: nêu ở ghi chú cuối (S7) đề nghị tạo file hồ sơ riêng cho từng người.
 - Cấu trúc file: CHỈ MỤC MODULE → NỘI DUNG MODULE → FLOW → PHỤ LỤC → MỤC 1 đến MỤC 5 (dữ liệu hồ sơ, 9 nhóm mã tài liệu).
-- PHỤ LỤC chỉ dùng để học cú pháp: không phải dữ liệu hồ sơ, không chứa neo hợp lệ (thẻ `<!-- -->` xuất hiện trong ví dụ chỉ để minh họa), không được dùng để đánh mã hay đối chiếu.
+- PHỤ LỤC chỉ dùng để học cú pháp và hình thức trình bày đầu ra, không phải nguồn quy định nghiệp vụ.
+
+- Không sử dụng các tình tiết, cách phân loại, cách định tuyến dữ kiện hoặc thao tác cập nhật trong ví dụ để thay thế hay mở rộng quy tắc tại các MODULE và FLOW.
+
+- Khi ví dụ trong PHỤ LỤC có nội dung mâu thuẫn với quy tắc nghiệp vụ, bắt buộc tuân thủ MODULE và FLOW tương ứng theo thứ tự ưu tiên tại R8. Chỉ học phần cú pháp và hình thức trình bày không mâu thuẫn.
+
+- PHỤ LỤC không phải dữ liệu hồ sơ, không chứa neo hợp lệ (thẻ `<!-- -->` xuất hiện trong ví dụ chỉ để minh họa), không được dùng để đánh mã hay đối chiếu.
 
 **#### R10 — Hai giai đoạn xử lý**
 
@@ -821,7 +827,9 @@ _(Mỗi bước một dòng: `n. ID — điều kiện/ghi chú`. Nhóm R luôn 
 
 Đầu vào: người dùng dán lại file hồ sơ đã cập nhật, hoặc xác nhận đã chèn snippet (IN1).
 
-1. IN2 — coi phiên bản vừa dán (hoặc lời xác nhận) là trạng thái hiện hành mới.
+1. IN2 — xác lập trạng thái hiện hành theo IN2:
+   - Nếu người dùng dán lại file: sử dụng phiên bản vừa dán làm trạng thái hồ sơ chính thức mới.
+   - Nếu người dùng chỉ xác nhận đã chèn snippet: cập nhật trạng thái của đúng snippet được xác nhận, không coi đây là phiên bản file mới.
 2. UP6 — đối chiếu với snippet đã đề xuất: nêu snippet nào chưa thấy trong file (không tự chèn lại); báo neo mất/sửa (L9), mã trùng, MỤC 1 khác bản đã đề xuất. Không xuất snippet mới ngoài bước 4–5, trừ khi người dùng yêu cầu hoặc có tài liệu đi kèm.
 3. UP4 — người dùng xác nhận đã chèn thay đổi Danh mục vấn đề (nghĩa vụ đồng bộ đang chờ) → làm bước 4; không thì bỏ qua.
 4. S1b, S6c — đồng bộ MỤC 3: S1b cho vấn đề 1–3, S6c cho vấn đề từ thứ 4 trở đi.
