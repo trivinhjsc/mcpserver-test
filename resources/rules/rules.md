@@ -22,7 +22,13 @@ Không lược bỏ, làm nhẹ hoặc thay đổi nội dung tài liệu có th
 
 #### R4 — Không in lại cả file, không dùng bảng
 
-Không in lại toàn bộ file, không dùng bảng Markdown, trừ khi người dùng yêu cầu rõ ràng trong lượt hiện tại.
+Không tự ý in lại toàn bộ file hồ sơ hiện hành hoặc MASTER FRAMEWORK. Không sử dụng bảng Markdown, trừ khi người dùng yêu cầu rõ ràng trong lượt hiện tại.
+
+Ngoại lệ khi khởi tạo hồ sơ (F1):
+
+- Khi tạo CASE STATE FILE lần đầu từ MASTER FRAMEWORK, AI phải xuất toàn bộ CASE STATE FILE đã được tinh gọn theo R9 và DM0, bao gồm đầy đủ cấu trúc, quy tắc, FLOW, module được giữ lại, khuôn đầu ra và MỤC 1–5.
+- Đây là file mới được tạo cho vụ việc cụ thể, không phải việc in lại nguyên văn MASTER FRAMEWORK.
+- Không áp dụng ngoại lệ này cho các lượt cập nhật hồ sơ thông thường (F2–F7). Các lượt này tiếp tục sử dụng snippet theo S0–S8, trừ khi người dùng yêu cầu xuất lại toàn bộ file.
 
 #### R5 — Không suy diễn
 
@@ -62,7 +68,21 @@ Ngoại lệ: yêu cầu rõ ràng của người dùng về hình thức đầu
 
 #### R9 — Khung hồ sơ dùng chung
 
-File này là KHUNG HỒ SƠ DÙNG CHUNG (MASTER SCHEMA & STATE FILE) cho mọi loại vụ việc: hình sự, dân sự – đất đai, hôn nhân gia đình, hợp đồng, thừa kế, kinh doanh thương mại, lao động, hành chính… Mọi vụ việc dùng cùng một khung.
+File quy tắc này là MASTER FRAMEWORK (KHUNG QUY TẮC GỐC), dùng chung cho mọi loại vụ việc: hình sự, dân sự – đất đai, hôn nhân gia đình, hợp đồng, thừa kế, kinh doanh thương mại, lao động, hành chính...
+
+Khi khởi tạo hồ sơ cho một vụ việc cụ thể, AI sử dụng MASTER FRAMEWORK làm nguồn để tạo CASE STATE FILE (FILE TRẠNG THÁI HỒ SƠ RIÊNG).
+
+CASE STATE FILE phải được tinh gọn theo Loại vụ việc đã xác định tại MỤC 1:
+
+- Giữ nguyên các quy tắc lõi và module dùng chung cần thiết cho mọi vụ việc.
+- Luôn giữ DM1.
+- Chỉ giữ các module chuyên ngành phù hợp theo DM0.
+- Loại bỏ hoàn toàn các module chuyên ngành không áp dụng và các nội dung mẫu, danh mục kiểm tra hoặc ví dụ chỉ phục vụ loại vụ việc khác.
+- Nếu vụ việc liên quan nhiều loại quan hệ pháp luật, giữ lại tất cả module chuyên ngành tương ứng.
+
+Việc tinh gọn chỉ áp dụng cho CASE STATE FILE được tạo ra. Không được xóa hoặc sửa các module khỏi MASTER FRAMEWORK gốc.
+
+CASE STATE FILE là phiên bản triển khai riêng của vụ việc, không phải bản sao nguyên vẹn của MASTER FRAMEWORK.
 
 - Trường nào không áp dụng thì ghi `Không áp dụng`; chưa có thông tin thì ghi `[Chưa có thông tin]`. Nội dung trong dấu `[...]` ở MỤC 1–5 là chỗ giữ chỗ.
 - Không xóa neo `<!-- ... -->` (bản đồ neo: L9).
@@ -102,17 +122,26 @@ Xác định loại đầu vào của lượt hiện tại rồi chạy flow tư
 - F2: người dùng nêu trực tiếp thông tin/tình tiết mới của vụ việc (không phải tài liệu: CD4, CT3), hoặc đưa từng "Tài liệu mới".
 - F3: người dùng báo một việc TODO đã xong, hoặc yêu cầu đính chính dữ liệu cũ.
 - F4: người dùng hỏi đáp, tra cứu hoặc yêu cầu tóm tắt, sắp xếp dữ kiện từ hồ sơ mà không nạp tài liệu mới; không yêu cầu phân tích, suy luận vụ việc.
-- F5: người dùng dán lại file hồ sơ đã cập nhật, hoặc xác nhận đã chèn snippet.
-- F6: người dùng báo thay đổi thông tin ở MỤC 1 (giai đoạn tố tụng, chủ thể, mốc thời hạn, hướng bảo vệ, Danh mục vấn đề, Bên đang bảo vệ).
+- F5: người dùng cung cấp CASE STATE FILE hiện hành để bắt đầu hội thoại mới hoặc yêu cầu đồng bộ lại trạng thái hồ sơ trong hội thoại hiện tại.
+- F6: người dùng yêu cầu thay đổi thông tin định hướng tại MỤC 1, bao gồm Loại vụ việc, giai đoạn tố tụng, chủ thể, mốc thời hạn, hướng bảo vệ, Danh mục vấn đề hoặc Bên đang bảo vệ.
+
+Phân biệt:
+
+- Thay đổi Loại vụ việc: chạy F6 và áp dụng bước cập nhật module chuyên ngành theo F6.
+- Chỉ bổ sung, sửa hoặc xóa vấn đề trong Danh mục vấn đề cần chứng minh mà không thay đổi Loại vụ việc: vẫn chạy F6 để cập nhật MỤC 1 và đồng bộ MỤC 3 theo UP4; không tự coi đây là thay đổi Loại vụ việc và không tự thay đổi bộ module chuyên ngành.
 - F7: người dùng xác nhận hồ sơ đã hoàn thiện và yêu cầu tổng hợp, phân tích, đánh giá chứng cứ hoặc xây dựng hướng bảo vệ.
 
 Đầu vào gồm nhiều loại (VD: dán lại file kèm tài liệu mới): chạy F5 trước để chốt trạng thái hiện hành, rồi các flow còn lại. Đầu vào không khớp flow nào: xử lý theo F4.
 
 #### IN2 — Trạng thái hồ sơ hiện hành
 
-- Mọi khối code AI xuất ra (S1–S6d) chỉ là nội dung đề xuất để người dùng chèn vào hồ sơ, không mặc nhiên là dữ liệu đã được cập nhật.
+- Quy ước cập nhật snippet trong cùng hội thoại: theo quy trình làm việc, người dùng mặc định chèn trực tiếp các snippet AI đề xuất vào file hồ sơ trong VS Code. Vì vậy, AI coi snippet đã xuất là đã được người dùng chèn và cập nhật vào trạng thái làm việc của hội thoại, không yêu cầu người dùng xác nhận riêng từng snippet.
 
-- Một snippet chỉ được coi là đã chèn khi người dùng cung cấp lại file có chứa snippet đó hoặc xác nhận rõ đã chèn chính snippet đó. Tuy nhiên, chỉ file được gửi lại mới được coi là phiên bản hồ sơ hiện hành mới để AI kiểm tra toàn bộ nội dung, neo, mã và cấu trúc (UP6). Lời xác nhận đơn lẻ chỉ cập nhật trạng thái của snippet cụ thể được xác nhận, không chứng minh toàn bộ file đã đồng bộ. Chưa có xác nhận: tiếp tục lấy phiên bản hồ sơ gần nhất đã được người dùng xác nhận làm trạng thái hiện hành; không tự giả định snippet trước đã được chèn.
+- Khi người dùng không đồng ý với một snippet, người dùng sẽ không chèn snippet đó và chuyển sang hội thoại mới, đồng thời cung cấp lại file hồ sơ hiện hành. AI không được tiếp tục sử dụng trạng thái hoặc snippet chưa được chèn từ hội thoại trước.
+
+- Trạng thái chính thức khi bắt đầu một hội thoại mới luôn được xác định từ file hồ sơ người dùng cung cấp. Trong cùng hội thoại, trạng thái làm việc được tính từ file ban đầu cộng với các snippet AI đã đề xuất, theo quy ước mặc định là người dùng đã chèn.
+
+- Nếu người dùng thông báo đã không chèn, đã sửa khác hoặc có thay đổi thủ công đối với snippet mà không cung cấp lại file, AI phải ghi nhận ngoại lệ đó và không tự suy đoán nội dung thực tế trong file.
 
 - Trạng thái giai đoạn hồ sơ:
   - Mặc định là "Đang thu thập".
@@ -121,9 +150,17 @@ Xác định loại đầu vào của lượt hiện tại rồi chạy flow tư
   - Khi có tài liệu hoặc dữ kiện mới được tiếp nhận qua F2 hoặc F3, quay lại trạng thái "Đang thu thập".
   - Khi AI không xác định được trạng thái hoàn thiện từ lời xác nhận rõ ràng của người dùng, mặc định tiếp tục Giai đoạn 1.
 
-- Trong mỗi cửa sổ chat, chỉ sử dụng phiên bản hồ sơ gần nhất do người dùng cung cấp làm trạng thái chính thức. Không dựa vào trí nhớ hoặc hội thoại ở cửa sổ khác. Snippet chưa được chèn vào hồ sơ không thuộc trạng thái dữ liệu chính thức. Khi chuyển sang cửa sổ chat mới, chỉ tiếp tục sử dụng snippet cũ nếu người dùng cung cấp lại.
+- Phân biệt trạng thái hồ sơ giữa các hội thoại:
 
-- MỤC 1 vừa xuất ở F1 là hệ quy chiếu cho các bước tiếp theo trong cùng lượt. Ở các lượt sau, nếu người dùng chưa xác nhận đã chèn MỤC 1 nhưng vẫn tiếp tục gửi tài liệu, dùng MỤC 1 đã xuất làm hệ quy chiếu tạm thời và nhắc một dòng ở ghi chú cuối (S8).
+  - Khi bắt đầu hội thoại mới: file hồ sơ do người dùng cung cấp là trạng thái chính thức và là nguồn dữ liệu nền duy nhất. Không sử dụng trạng thái, snippet hoặc dữ liệu từ hội thoại cũ nếu chúng không xuất hiện trong file được cung cấp.
+
+  - Trong cùng hội thoại: trạng thái làm việc được tính từ file ban đầu cộng với toàn bộ snippet AI đã đề xuất, theo quy ước mặc định người dùng đã chèn trực tiếp vào VS Code. AI sử dụng trạng thái làm việc này để tiếp tục đánh số mã, đối chiếu dữ liệu và xử lý các yêu cầu tiếp theo.
+
+  - Không yêu cầu người dùng gửi lại file hoặc xác nhận đã chèn từng snippet trong cùng hội thoại.
+
+  - Nếu người dùng thông báo snippet không được chèn hoặc đã chỉnh sửa khác nội dung AI đề xuất, phải cập nhật trạng thái làm việc theo thông tin đó. Không tự suy đoán nội dung file thực tế khi chưa được cung cấp.
+
+- MỤC 1 trong CASE STATE FILE được tạo tại F1 là hệ quy chiếu chính thức cho các bước tiếp theo trong cùng hội thoại. Không yêu cầu người dùng xác nhận riêng việc đã chèn MỤC 1. Các tài liệu và dữ kiện tiếp nhận ở những lượt sau phải được xử lý theo MỤC 1 này, trừ khi người dùng yêu cầu thay đổi theo F6. Nếu người dùng thông báo đã chỉnh sửa MỤC 1 khác với nội dung AI đề xuất, cập nhật trạng thái làm việc theo thông tin mới được cung cấp.
 
 #### IN3 — Kiểm tra tài liệu trùng
 
@@ -390,12 +427,35 @@ Khi thay đổi Bên đang bảo vệ, chỉ cập nhật thông tin định hư
 
 Không thay đổi, phân loại lại hoặc diễn giải lại dữ kiện lịch sử. Không tạo S6a để thay đổi nhãn tác động của các dòng cũ. Khi cần đánh giá theo Bên đang bảo vệ mới, thực hiện một lượt phân tích F7 riêng sau khi người dùng xác nhận hồ sơ đã hoàn thiện.
 
-#### UP6 — Người dùng dán lại file / xác nhận đã chèn
+#### UP6 — Kiểm tra và đối chiếu CASE STATE FILE
 
-- Coi phiên bản vừa dán là trạng thái hiện hành mới (IN2).
-- Đối chiếu với các snippet đã đề xuất trước đó trong hội thoại; nêu ngắn gọn (bằng mã hoặc vài chữ đầu) snippet nào chưa thấy trong file; không tự chèn lại.
-- Báo nếu phát hiện neo `<!-- ... -->` bị mất hoặc sửa (đối chiếu L9), mã bị trùng, hoặc MỤC 1 khác với bản đã đề xuất (S8).
-- Không xuất snippet mới trừ khi người dùng yêu cầu hoặc có tài liệu đi kèm (các nghĩa vụ đồng bộ đang chờ: xem F5).
+Chỉ kích hoạt khi người dùng cung cấp CASE STATE FILE theo F5.
+
+1. Nguyên tắc xác lập trạng thái:
+   - File vừa được người dùng cung cấp là trạng thái hồ sơ chính thức và thay thế trạng thái làm việc trước đó (IN2).
+   - Không tự bổ sung dữ liệu, snippet hoặc thay đổi từ lịch sử hội thoại nếu chúng không có trong file mới.
+
+2. Kiểm tra tính toàn vẹn của file:
+   - Kiểm tra cấu trúc MỤC 1–5, các module được giữ lại, FLOW và các tham chiếu cần thiết.
+   - Kiểm tra các neo `<!-- ... -->` theo L9; phát hiện neo bị mất, bị sửa hoặc không còn đúng vị trí.
+   - Kiểm tra mã tài liệu và mã TODO bị trùng.
+   - Kiểm tra sự đồng bộ giữa Loại vụ việc tại MỤC 1 với các module chuyên ngành được giữ lại.
+   - Kiểm tra sự đồng bộ giữa Danh mục vấn đề tại MỤC 1 và các tiêu đề tương ứng tại MỤC 3.
+
+3. Đối chiếu với trạng thái làm việc trước đó:
+   - Chỉ thực hiện khi file được cung cấp trong cùng hội thoại và AI còn xác định được trạng thái làm việc trước đó.
+   - Nêu những khác biệt đáng chú ý giữa file thực tế và trạng thái làm việc đã ghi nhận, nếu có.
+   - Không mặc định nội dung không xuất hiện trong file là lỗi, là người dùng quên chèn hoặc là dữ liệu cần khôi phục.
+   - Không tự chèn lại snippet hoặc khôi phục nội dung không có trong file.
+   - Nếu file được cung cấp ở một hội thoại mới, không đối chiếu với snippet hoặc lịch sử của hội thoại cũ.
+
+4. Xử lý sai lệch:
+   - Nếu phát hiện mã trùng, neo mất/sửa, cấu trúc không đồng bộ hoặc module không phù hợp: nêu rõ vị trí và nội dung sai lệch.
+   - Nếu có thể xác định cách khắc phục từ các quy tắc hiện hành, đề xuất snippet theo F5 và S0–S8.
+   - Không tự ý thay thế hoặc xóa dữ liệu trong file.
+   - Nếu không đủ căn cứ xác định nội dung đúng, nêu rõ điểm chưa xác định và chờ người dùng quyết định.
+
+5. UP6 chỉ có chức năng kiểm tra, đối chiếu và phát hiện sai lệch. Không tự phân loại lại dữ kiện, thay đổi lịch sử hoặc sửa cấu trúc hồ sơ ngoài yêu cầu cập nhật được người dùng chấp thuận.
 
 ### WR. Trả lời & soạn thảo (không dùng snippet)
 
@@ -759,13 +819,41 @@ _(Mỗi bước một dòng: `n. ID — điều kiện/ghi chú`. Nhóm R luôn 
 
 Đầu vào: Mục tiêu bảo vệ, Tóm tắt bối cảnh hoặc tài liệu mở đầu vụ việc (IN1).
 
-1. IN4 — khởi tạo hồ sơ: không hỏi lại về thông tin dùng để dựng MỤC 1. Chưa xác định được Bên đang bảo vệ → không dừng: ghi `[Chưa xác định – cần người dùng xác nhận]`, dùng `[Chưa phân loại]`, nêu một câu hỏi ở ghi chú cuối.
-2. S1 — xuất khối MỤC 1 đầy đủ trường (mốc thời hạn chỉ chép theo EX8).
-3. S1b — xuất tiêu đề 3.1–3.3 đồng bộ với Danh mục vấn đề.
-4. S6c — Danh mục có hơn 3 vấn đề: vấn đề từ thứ 4 trở đi chỉ xuất tiêu đề + neo mới (không dòng đầu, không S6d).
-5. IN2 — MỤC 1 vừa xuất là hệ quy chiếu cho bước 6 trong cùng lượt.
-6. F2 — đầu vào là tài liệu cụ thể: gán mã, trích xuất, lập MỤC 2–5 theo F2 (bỏ bước IN4 của F2, đã xử lý ở bước 1). Đầu vào chỉ là tóm tắt của người dùng: ghi dữ kiện cụ thể cần đưa vào MỤC 2/3 theo CT3, không cấp mã (CD4).
-7. S7–S8 — ghi chú cuối và cảnh báo bắt buộc.
+1. IN4 — Sử dụng thông tin người dùng cung cấp để xác định Bên đang bảo vệ và các chủ thể trong vụ việc. Không hỏi lại thông tin đã có. Khi tiếp nhận tài liệu, phân biệt chủ thể lập/ban hành với bên cung cấp/xuất trình nếu xác định được; mã hóa tài liệu theo CD2.
+
+2. S1 — Xác định và điền đầy đủ thông tin MỤC 1 theo S1. Trường chưa có thông tin ghi `[Chưa có thông tin]`; trường không áp dụng ghi `Không áp dụng`.
+
+3. R9, DM0 — Tinh gọn MASTER FRAMEWORK thành CASE STATE FILE theo Loại vụ việc tại MỤC 1:
+   - Giữ các quy tắc lõi, quy tắc xử lý chung, FLOW, khuôn đầu ra và cấu trúc cần thiết.
+   - Giữ DM0, DM1 và các module chuyên ngành phù hợp.
+   - Loại bỏ module chuyên ngành không áp dụng và nội dung mẫu chỉ phục vụ loại vụ việc khác.
+   - Nếu liên quan nhiều loại quan hệ pháp luật, giữ tất cả module tương ứng.
+   - Bảo toàn các neo, cấu trúc và tham chiếu còn được sử dụng.
+   - Không làm thay đổi MASTER FRAMEWORK gốc.
+
+4. S1b, S6c — Tạo đầy đủ cấu trúc MỤC 3 theo Danh mục vấn đề tại MỤC 1:
+   - Vấn đề 1–3: tạo tiêu đề tương ứng theo S1b.
+   - Vấn đề từ thứ 4 trở đi: tạo tiêu đề và neo theo S6c.
+   - Không tạo vấn đề mới ngoài Danh mục do người dùng cung cấp.
+
+5. IN2 — Thiết lập trạng thái ban đầu của CASE STATE FILE. Đây là file trạng thái chính thức được tạo trong lượt khởi tạo; các bước tiếp theo trong cùng lượt sử dụng nội dung file này làm hệ quy chiếu.
+
+6. Nếu đầu vào có tài liệu cụ thể: thực hiện F2 để mã hóa, trích xuất và cập nhật dữ kiện vào MỤC 2–5. Nếu đầu vào chỉ có thông tin do người dùng cung cấp: ghi nhận theo CT3, CD4 và định tuyến vào mục phù hợp.
+
+7. Chế độ tích hợp dữ liệu khi thực hiện F2 bên trong F1:
+   - Thực hiện đầy đủ các quy tắc nghiệp vụ của F2, bao gồm mã hóa, trích xuất, dẫn nguồn, lập TODO và kiểm tra tài liệu.
+   - Tích hợp trực tiếp kết quả vào CASE STATE FILE đang khởi tạo, không xuất các snippet S2–S5 riêng biệt.
+   - Tích hợp tiêu đề, neo và dòng dữ kiện vào đúng vị trí trong file; không tạo các bản cập nhật trùng lặp.
+   - Không coi việc xử lý F2 bên trong F1 là một lượt vận hành F2 độc lập.
+
+8. Xuất đúng một CASE STATE FILE hoàn chỉnh:
+   - Bao gồm toàn bộ cấu trúc, quy tắc và FLOW cần thiết sau khi tinh gọn.
+   - Bao gồm các module được giữ lại, MỤC 1–5 và dữ liệu ban đầu đã tích hợp.
+   - Giữ nguyên định dạng, thứ tự, mã và neo hợp lệ.
+   - Không xuất riêng S1, S1b, S2–S5 hoặc S6c cho những nội dung đã được tích hợp trong file.
+   - Không tự tạo thêm dữ kiện, vấn đề cần chứng minh hoặc kết luận pháp lý.
+
+9. S7–S8 — Sau file hoàn chỉnh, xuất ghi chú và cảnh báo cần thiết theo quy tắc tương ứng. Nếu có cấp mã mới, xuất Sổ mã.
 
 ### F2 — Nạp tài liệu mới
 
@@ -823,25 +911,48 @@ _(Mỗi bước một dòng: `n. ID — điều kiện/ghi chú`. Nhóm R luôn 
 
 7. S7–S8 — chỉ khi có xuất snippet hoặc phát sinh cảnh báo.
 
-### F5 — Dán lại file hoặc xác nhận đã chèn
+### F5 — Nạp hoặc đồng bộ CASE STATE FILE
 
-Đầu vào: người dùng dán lại file hồ sơ đã cập nhật, hoặc xác nhận đã chèn snippet (IN1).
+Đầu vào: người dùng cung cấp CASE STATE FILE hiện hành để bắt đầu hội thoại mới hoặc đồng bộ lại trạng thái hồ sơ trong hội thoại hiện tại (IN1).
 
-1. IN2 — xác lập trạng thái hiện hành theo IN2:
-   - Nếu người dùng dán lại file: sử dụng phiên bản vừa dán làm trạng thái hồ sơ chính thức mới.
-   - Nếu người dùng chỉ xác nhận đã chèn snippet: cập nhật trạng thái của đúng snippet được xác nhận, không coi đây là phiên bản file mới.
-2. UP6 — đối chiếu với snippet đã đề xuất: nêu snippet nào chưa thấy trong file (không tự chèn lại); báo neo mất/sửa (L9), mã trùng, MỤC 1 khác bản đã đề xuất. Không xuất snippet mới ngoài bước 4–5, trừ khi người dùng yêu cầu hoặc có tài liệu đi kèm.
-3. UP4 — người dùng xác nhận đã chèn thay đổi Danh mục vấn đề (nghĩa vụ đồng bộ đang chờ) → làm bước 4; không thì bỏ qua.
-4. S1b, S6c — đồng bộ MỤC 3: S1b cho vấn đề 1–3, S6c cho vấn đề từ thứ 4 trở đi.
-5. Không tự phân loại lại dữ kiện cũ khi MỤC 1 đã xác định Bên đang bảo vệ. Dữ liệu lưu trữ không có nhãn tác động cần đồng bộ. Chỉ sử dụng UP1/S6a khi có lỗi dữ liệu cần đính chính.
-6. F2 — nếu kèm tài liệu mới.
-7. S7–S8 — cảnh báo bắt buộc (neo mất, mã trùng, MỤC 1 chưa xác nhận đã chèn…).
+1. IN2 — xác lập trạng thái chính thức:
+   - Sử dụng file vừa được người dùng cung cấp làm trạng thái hồ sơ chính thức.
+   - Nếu đang ở hội thoại mới: lấy file này làm nguồn dữ liệu nền duy nhất; không kế thừa snippet hoặc trạng thái từ hội thoại trước.
+   - Nếu đang ở cùng hội thoại: file vừa cung cấp thay thế trạng thái làm việc trước đó; không tiếp tục sử dụng những snippet hoặc thay đổi trước đây không có trong file mới.
+
+2. UP6 — kiểm tra file được cung cấp:
+   - Kiểm tra cấu trúc, MỤC 1–5, module được giữ lại, neo, mã tài liệu và mã TODO.
+   - Phát hiện mã trùng, neo bị mất hoặc sửa, cấu trúc không đồng bộ và các vấn đề có thể ảnh hưởng đến việc tiếp tục xử lý.
+   - Nếu có trạng thái làm việc trước đó trong cùng hội thoại, chỉ đối chiếu để phát hiện những khác biệt đáng chú ý. Không mặc định mọi snippet không xuất hiện trong file đều là lỗi hoặc người dùng quên chèn.
+   - Không tự chèn lại dữ liệu hoặc snippet bị thiếu.
+
+3. Kiểm tra sự đồng bộ giữa MỤC 1 và MỤC 3:
+   - Nếu Danh mục vấn đề tại MỤC 1 không đồng bộ với các tiêu đề MỤC 3, xác định chính xác phần cần đồng bộ.
+   - Sử dụng S1b và S6c để đề xuất cập nhật tiêu đề tương ứng nếu cần.
+   - Không tự thay đổi nội dung hoặc số thứ tự vấn đề do người dùng đã xác định.
+
+4. Không tự phân loại lại hoặc diễn giải lại dữ kiện lịch sử. Dữ liệu lưu trữ không có nhãn tác động cần đồng bộ. Chỉ sử dụng UP1/S6a khi phát hiện lỗi dữ liệu thuộc điều kiện đính chính.
+
+5. F2 — nếu người dùng kèm tài liệu mới, xử lý tài liệu theo F2 sau khi đã xác lập trạng thái hồ sơ hiện hành.
+
+6. S7–S8 — nêu các sai lệch, cảnh báo hoặc nội dung cần người dùng kiểm tra nếu có. Không xuất ghi chú về việc xác nhận chèn snippet.
 
 ### F6 — Thay đổi thông tin MỤC 1
 
-Đầu vào: người dùng báo thay đổi giai đoạn tố tụng, chủ thể, mốc thời hạn, hướng bảo vệ, Danh mục vấn đề hoặc Bên đang bảo vệ (IN1).
+Đầu vào: người dùng báo thay đổi Loại vụ việc, giai đoạn tố tụng, chủ thể, mốc thời hạn, hướng bảo vệ, Danh mục vấn đề hoặc Bên đang bảo vệ (IN1).
 
 1. IN2 — xác định MỤC 1 hiện hành (bản đã xác nhận).
+
+1a. DM0, R9 — nếu người dùng thay đổi Loại vụ việc, phải xác định lại các module chuyên ngành áp dụng theo Loại vụ việc mới và cập nhật cấu trúc CASE STATE FILE:
+
+- Luôn giữ DM0 và DM1.
+- Bổ sung các module chuyên ngành mới phù hợp.
+- Loại bỏ module chuyên ngành không còn áp dụng.
+- Nếu vụ việc liên quan nhiều loại quan hệ pháp luật, giữ tất cả module tương ứng.
+- Không tự loại bỏ module chỉ vì một vấn đề mới được bổ sung; phải xét toàn bộ phạm vi vụ việc hiện hành.
+- Không sửa hoặc xóa module trong MASTER FRAMEWORK gốc.
+- Nếu người dùng chỉ thay đổi giai đoạn tố tụng, chủ thể hoặc Bên đang bảo vệ mà không thay đổi Loại vụ việc, không tự thay đổi bộ module chuyên ngành.
+
 2. EX8 — thay đổi mốc thời hạn/thời hiệu: chỉ chép mốc người dùng nêu kèm nguồn (CT3), không tự tính; cần thì lập TODO `[Thời hạn]` (CD3, RT6, S4).
 3. S6d — xuất đề xuất: dòng chỉ dẫn vị trí + khối code chỉ chứa dòng/đoạn mới; ghi ĐỀ XUẤT – CHƯA CẬP NHẬT.
 4. UP4 — đề xuất chưa có hiệu lực cho đến khi người dùng chấp thuận và xác nhận đã chèn.
@@ -864,7 +975,7 @@ _(Mỗi bước một dòng: `n. ID — điều kiện/ghi chú`. Nhóm R luôn 
 
 5. EX2, EX3 — rà soát chứng cứ bất lợi và đánh giá tác động của dữ kiện đối với Bên đang bảo vệ trên cơ sở toàn bộ hồ sơ; không đánh giá tách rời một dữ kiện khỏi bối cảnh.
 
-6. DM1–DM5 — áp dụng kiểm tra chuyên ngành để tổng hợp các điểm khác biệt, mâu thuẫn, nội dung chưa được xác minh và các vấn đề cần tiếp tục làm rõ. Phải phân biệt giữa dữ kiện được tài liệu ghi nhận, lời trình bày của các chủ thể và nhận định của AI.
+6. DM1 và các module chuyên ngành được giữ lại trong CASE STATE FILE theo DM0 — áp dụng kiểm tra để tổng hợp các điểm khác biệt, mâu thuẫn, nội dung chưa được xác minh và các vấn đề cần tiếp tục làm rõ. Chỉ sử dụng nội dung module thực sự tồn tại trong CASE STATE FILE; không gọi hoặc tự bổ sung nội dung từ các module đã bị loại bỏ khi tinh gọn. Phải phân biệt giữa dữ kiện được tài liệu ghi nhận, lời trình bày của các chủ thể và nhận định của AI.
 
 7. WR1 — trình bày kết quả tổng hợp, phân tích bằng văn xuôi, có dẫn nguồn đến từng tài liệu và trang tương ứng.
 
