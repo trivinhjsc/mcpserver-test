@@ -798,13 +798,18 @@ Với từng tiêu đề `### 3.1.`, `### 3.2.`, `### 3.3.` cần thay đổi:
 ### 3.3. Vấn đề 3: [Tên vấn đề theo Danh mục]
 ```
 
+**REPLACE 2**
+
+````text
 #### S2 — Vị trí 2: dòng MỤC 2 (dòng thời gian)
 
 Chèn dòng dữ kiện vào MỤC 2 theo RT5 (đóng gói theo R4; điểm neo là các dòng dữ liệu hoặc tiêu đề hiện có tại vị trí chèn). Chỉ ghi nội dung và nguồn, không đánh giá tác động của sự kiện.
 
+Khi dòng dữ kiện được tiếp nhận từ một mục đồng bộ [DS-xx], thêm hậu tố `— [Đồng bộ từ DS-xx]` ở cuối đúng dòng dữ kiện đó. Mã DS phải giữ nguyên và không thay thế nguồn dữ liệu hoặc nhãn bản chất thông tin.
+
 ```markdown
 - **[Mốc thời gian | Loại mốc] Tên sự kiện:** [Bản chất thông tin] Nội dung được ghi nhận: ... — `[Mã TL, tr.x]` hoặc `[Người dùng cung cấp, dd/mm/yyyy]`.
-```
+````
 
 #### S3 — Vị trí 3: dòng MỤC 3 (3.A, 3.x, 3.B, Tham chiếu 3.B)
 
@@ -822,13 +827,19 @@ MỤC 3.x ưu tiên tham chiếu đến dữ kiện đã ghi ở MỤC 2, không
 
 Chèn TODO vào MỤC 4 theo RT6; điểm neo là tiêu đề MỤC 4 hoặc dòng TODO hiện có. Nếu MỤC 4 chưa có TODO, dùng tiêu đề MỤC 4 và tiêu đề mục tiếp theo.
 
+Khi TODO được tạo từ một mục đồng bộ [DS-xx], thêm hậu tố `— [Đồng bộ từ DS-xx]` ở cuối dòng TODO. Giữ nguyên mã DS để truy xuất mục nguồn trong get defend.
+
 ```markdown
-- [ ] **[TD-xx] [Nhóm việc]** (Ưu tiên: Cao/TB/Thấp; hạn nếu có) Nội dung cần xác minh/thu thập...
+- [ ] **[TD-xx] [Nhóm việc]** (Ưu tiên: Cao/TB/Thấp; hạn nếu có) Nội dung cần xác minh/thu thập... — [Đồng bộ từ DS-xx]
 ```
 
 #### S5 — Vị trí 5: dòng tài liệu MỤC 5
 
 Chèn dòng tài liệu vào đúng nhóm 5.x theo RT7; điểm neo là tiêu đề nhóm tương ứng hoặc dòng tài liệu hiện có. Nếu nhóm chưa có tài liệu, dùng tiêu đề nhóm đó và tiêu đề nhóm kế tiếp.
+
+Khi tài liệu được nạp để đáp ứng một mục đồng bộ [DS-xx] có đích `[Cần nạp tài liệu gốc]`, thêm hậu tố `— [Đồng bộ từ DS-xx]` vào cuối dòng tài liệu tại MỤC 5.
+
+Chỉ gắn mã DS khi tài liệu gốc thực tế đã được tiếp nhận. Không gắn mã DS vào bản tóm tắt, lời mô tả hoặc tài liệu chưa được cung cấp. Các dữ kiện trích xuất từ tài liệu tiếp tục dẫn nguồn bằng mã tài liệu theo CT2; không cần lặp mã DS trên các dòng S2 được trích xuất từ tài liệu đó.
 
 ```markdown
 - **[Mã TL]** (dd/mm/yyyy, ban hành/lập) **Tên văn bản & Số hiệu - Chủ thể (Dạng tài liệu; Quy mô trang; Tệp nguồn & dải trang PDF; BL nếu có; Nguồn cung cấp nếu quan trọng; Giao nhận dd/mm/yyyy nếu có):** Tóm tắt tối đa 1 câu ngắn.
@@ -840,7 +851,9 @@ Chỉ dùng khi đúng điều kiện UP1.
 
 - SEARCH chứa nguyên văn toàn bộ dòng dữ liệu cũ cần đính chính.
 - REPLACE chứa toàn bộ dòng dữ liệu đã đính chính, giữ nguyên các thành phần không có lỗi.
-- Dòng thay thế phải kết thúc bằng `[Đã đính chính: lý do ngắn]`.
+- Dòng thay thế phải giữ cờ `[Đã đính chính: lý do ngắn]`.
+- Nếu việc đính chính được thực hiện theo một mục đồng bộ [DS-xx], thêm hậu tố `— [Đồng bộ từ DS-xx]` sau cờ đính chính.
+- Nếu dòng cũ đã có mã liên kết DS, giữ nguyên các mã đó trong dòng REPLACE và bổ sung mã DS mới nếu có.
 - Nhắc lại lý do trong ghi chú cuối (S7).
 - Không thay đổi bất kỳ dòng dữ liệu nào khác.
 - Không thay đổi bản chất thông tin hoặc thêm nhận định mới vào dòng đính chính.
@@ -890,7 +903,10 @@ Chỉ dùng khi người dùng trực tiếp yêu cầu cập nhật MỤC 1 (F6
 Không tự xuất S6d khi nạp tài liệu mới hoặc khi AI nhận thấy một dữ kiện có thể liên quan đến vấn đề chưa có trong Danh mục.
 
 - Nếu bổ sung một vấn đề mới, SEARCH phải xác định chính xác vị trí trong Danh mục vấn đề bằng dòng liền trước và dòng liền sau; REPLACE giữ nguyên các dòng đó và chèn vấn đề mới vào đúng thứ tự.
-- Ghi rõ **ĐỀ XUẤT – CHƯA CẬP NHẬT** ngoài khối code. Chỉ coi là dữ liệu chính thức sau khi người dùng chấp thuận và xác nhận đã chèn (UP4).
+- Nếu thay đổi MỤC 1 xuất phát từ một mục đồng bộ [DS-xx], thêm hậu tố `— [Đồng bộ từ DS-xx]` vào cuối từng dòng MỤC 1 thực sự được thay đổi trong REPLACE.
+- Nếu dòng MỤC 1 đã có mã liên kết DS từ trước, phải giữ nguyên các mã đó khi cập nhật và bổ sung mã mới nếu có.
+- Không thêm mã DS vào dòng không liên quan đến mục đồng bộ.
+- Ghi rõ **ĐỀ XUẤT – CHƯA CẬP NHẬT** ngoài khối code. Chỉ coi là dữ liệu chính thức sau khi người dùng chấp thuận và xác nhận đã chèn (UP4). Mã liên kết DS chỉ trở thành dấu vết trong hồ sơ thực tế sau khi thay đổi được chấp thuận và chèn.
 
 #### S6e — Đồng bộ module chuyên ngành từ MASTER FRAMEWORK
 
@@ -1196,7 +1212,30 @@ _(Mỗi bước một dòng: `n. ID — điều kiện/ghi chú`. Nhóm R luôn 
 17. UP2 — nếu là văn bản sửa đổi/thay thế/đính chính tài liệu trước.
 18. RT7 — (chỉ tài liệu) lập dòng MỤC 5.
 19. S2–S5 — mỗi vị trí chèn một cặp SEARCH/REPLACE (R4); vị trí nào không phát sinh thì bỏ qua (S0).
+
+19a. Bảo toàn mã liên kết đồng bộ:
+
+- Nếu đầu vào có mã [DS-xx], giữ nguyên mã đó như mã liên kết nguồn; không cấp lại mã, không đổi mã và không coi mã này là dữ kiện của vụ việc.
+- Xác định đúng đích tiếp nhận theo nội dung mục DS:
+  - Dữ kiện mới → dòng S2 tại MỤC 2.
+  - Việc cần làm → dòng S4 tại MỤC 4.
+  - Tài liệu gốc đã thực sự được cung cấp và nạp → dòng S5 tại MỤC 5.
+  - Đính chính dữ liệu → dòng REPLACE theo S6a.
+  - Cập nhật MỤC 1 → dòng REPLACE theo S6d.
+- Tại dòng đích được tạo hoặc cập nhật, thêm hậu tố `— [Đồng bộ từ DS-xx]`, sử dụng đúng mã của mục nguồn.
+- Nếu một mục DS có nhiều dòng đích thuộc cùng một loại tiếp nhận, gắn mã DS tương ứng vào từng dòng đích.
+- Không gắn mã DS vào dòng tham chiếu S3 tại MỤC 3; mã liên kết đặt tại dòng dữ kiện gốc ở MỤC 2.
+- Với tài liệu gốc, chỉ gắn mã khi tài liệu thực tế đã được nạp và ghi nhận tại MỤC 5. Không coi bản tóm tắt hoặc lời mô tả tài liệu là việc đã nạp tài liệu gốc.
+- Không tự gán cùng một DS cho nhiều loại đích độc lập. Nếu đầu vào không xác định rõ mục DS tương ứng với dòng đích nào, không tự suy đoán; nêu rõ mục chưa xác định được liên kết.
+- Khi cập nhật một dòng đã có mã DS, giữ nguyên các mã liên kết lịch sử; không xóa mã cũ khi bổ sung mã mới.
+
+19b. Các trường hợp S6a và S6d:
+
+- S6a: giữ mã DS tại dòng REPLACE nếu việc đính chính thuộc một mục DS cụ thể.
+- S6d: chỉ đưa mã DS vào dòng REPLACE khi thay đổi MỤC 1 thực sự xuất phát từ mục DS tương ứng. Đề xuất chưa được chấp thuận không được xem là thay đổi đã tiếp nhận.
+
 20. S6c, S6d — chỉ thực hiện khi người dùng trực tiếp yêu cầu thay đổi Danh mục hoặc đã chấp thuận cập nhật; không tự xuất từ dữ kiện mới.
+
 21. S7–S8 — ghi chú cuối và cảnh báo bắt buộc; có cấp mã mới thì kèm dòng "Sổ mã".
 
 ### F3 — Báo xong TODO / đính chính dữ liệu cũ

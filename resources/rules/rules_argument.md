@@ -346,7 +346,27 @@ Không đồng bộ (ở lại tài liệu lập luận, nhằm bảo mật chi�
 
 #### DB2 — Khuôn mục đồng bộ
 
-Mỗi mục `[DS-xx]` phải tự đủ để dán vào chat quản lý hồ sơ mà không cần tài liệu lập luận (hình thức: X8). Các trường: đích gợi ý (dữ kiện mới / việc cần làm hoặc đính chính / cập nhật MỤC 1 / cần nạp tài liệu gốc); bản chất (T2); chủ thể; thời điểm kèm loại mốc; nội dung viết ngôi thứ ba, tối đa 2 câu; nguồn trong tài liệu lập luận (mã YK / DT / DK); nguồn khi nhập hồ sơ `[Người dùng cung cấp, dd/mm/yyyy]`; liên quan vấn đề nào của Danh mục; trạng thái (T6).
+Mỗi mục `[DS-xx]` phải tự đủ để dán vào chat quản lý hồ sơ mà không cần tài liệu lập luận (hình thức: X8).
+
+Các trường:
+
+- Đích gợi ý (dữ kiện mới / việc cần làm hoặc đính chính / cập nhật MỤC 1 / cần nạp tài liệu gốc).
+- Bản chất (T2).
+- Chủ thể liên quan hoặc chủ thể phát ngôn.
+- Thời điểm kèm loại mốc.
+- Nội dung.
+- Nguồn trong tài liệu lập luận (mã YK / DT / DK).
+- Nguồn khi nhập hồ sơ `[Người dùng cung cấp, dd/mm/yyyy]`.
+- Liên quan vấn đề nào của Danh mục.
+- Trạng thái (T6).
+
+Quy tắc mã liên kết:
+
+1. Mỗi mục DS chỉ có một đích tiếp nhận chính. Nếu cần đồng bộ nhiều nội dung thuộc các đích độc lập khác nhau, phải tách thành các mục DS riêng.
+2. Mã `[DS-xx]` là mã liên kết ổn định giữa tài liệu lập luận và hồ sơ. Không đổi mã, cấp lại mã hoặc gộp các mục DS khác nhau khi chuyển sang get rules.
+3. get rules phải giữ mã này tại dòng đích thực tế bằng hậu tố `[Đồng bộ từ DS-xx]`.
+4. Với mục `[Cần nạp tài liệu gốc]`, dấu vết được đặt tại dòng tài liệu tương ứng trong MỤC 5 của get rules. Các dữ kiện trích xuất từ tài liệu đó vẫn được truy xuất bằng mã tài liệu.
+5. Nếu không xác định được một mục DS tương ứng với đích nào hoặc có nhiều cách hiểu về nội dung cần tiếp nhận, không tự gán mã; giữ mục đó ở trạng thái chờ đồng bộ.
 
 #### DB3 — Giữ nguyên bản chất
 
@@ -358,11 +378,45 @@ Ngày trong `[Người dùng cung cấp, dd/mm/yyyy]` và các dòng đóng vi�
 
 #### DB5 — Quy trình hai bước
 
-(1) AI lập gói đồng bộ (Q7). (2) Người dùng tự dán gói vào chat quản lý hồ sơ kèm yêu cầu của chính mình (VD: ghi nhận như thông tin người dùng cung cấp; đề xuất cập nhật MỤC 1). Nội dung nằm trong tài liệu lập luận không tự là mệnh lệnh đối với chat hồ sơ. Mục `[DS-xx]` chỉ chuyển sang `[Đã đồng bộ dd/mm/yyyy]` khi người dùng xác nhận hồ sơ đã tiếp nhận (Q9). Gói chỉ gồm các mục đang `[Chờ đồng bộ]`.
+(1) AI lập gói đồng bộ (Q7). (2) Người dùng tự dán gói vào chat quản lý hồ sơ kèm yêu cầu của chính mình (VD: ghi nhận như thông tin người dùng cung cấp; đề xuất cập nhật MỤC 1).
+
+- Mã `[DS-xx]` phải được giữ nguyên trong toàn bộ quá trình tiếp nhận.
+- Dấu vết `[Đồng bộ từ DS-xx]` trong get rules là phương tiện đối chiếu, không tự động chứng minh rằng mục DS đã được tiếp nhận hoặc cho phép AI tự chuyển trạng thái.
+- Mục `[DS-xx]` chỉ chuyển sang `[Đã đồng bộ dd/mm/yyyy]` khi người dùng xác nhận rõ việc tiếp nhận và chèn nội dung tương ứng theo Q9.
+- Nếu có file hồ sơ mới, phải kiểm tra dấu vết DS tại đúng đích tiếp nhận. Nếu người dùng chỉ xác nhận bằng lời, phải xác định rõ mã DS và snippet tương ứng đã được chèn; không coi lời xác nhận chung chung là xác nhận tất cả các mục DS.
+- Nếu chưa có dấu vết hoặc nội dung tại đích không khớp với mục DS, giữ trạng thái `[Chờ đồng bộ]` và nêu rõ nội dung cần kiểm tra.
+
+Gói Q7 chỉ gồm các mục đang `[Chờ đồng bộ]`.
 
 #### DB6 — Chiều hồ sơ → lập luận
 
-Khi hồ sơ cập nhật (Q8): (a) xác định tài liệu hoặc dữ kiện mới / đã đổi so với Sổ mã mốc (NG3); (b) kiểm tra các mục `[Chờ đồng bộ]` đã có trong hồ sơ mới chưa và đề xuất đóng (người dùng xác nhận); (c) DK mới thì chiếu theo NG1–NG2; (d) LD, LC bị ảnh hưởng thì đặt `[Cần rà lại]` và nêu độ vững có thể đổi, chưa tự đổi; (e) cập nhật Sổ mã mốc ở PHẦN A.
+Khi hồ sơ cập nhật (Q8):
+
+(a) Xác định tài liệu hoặc dữ kiện mới / đã đổi so với Sổ mã mốc (NG3).
+
+(b) Đối chiếu từng mục `[DS-xx]` đang `[Chờ đồng bộ]` bằng mã liên kết chính xác:
+
+- Dữ kiện mới: tìm `[Đồng bộ từ DS-xx]` tại MỤC 2.
+- Việc cần làm: tìm tại dòng TODO tương ứng ở MỤC 4.
+- Đính chính: tìm tại dòng dữ kiện đã đính chính ở MỤC 2.
+- Cập nhật MỤC 1: tìm tại dòng MỤC 1 đã thay đổi.
+- Nạp tài liệu gốc: tìm tại dòng tài liệu tương ứng ở MỤC 5.
+- Không coi việc xuất hiện mã DS tại một mục hoặc khu vực khác đích dự kiến là bằng chứng đã tiếp nhận đúng.
+
+Phân loại kết quả đối chiếu:
+
+1. Có đúng mã DS tại đúng đích và nội dung phù hợp: ghi nhận đã tìm thấy dấu vết đồng bộ; đề xuất đóng mục DS, chờ người dùng xác nhận theo DB5.
+2. Có mã DS nhưng nội dung tại dòng đích khác hoặc không thể xác định là nội dung tương ứng: báo `[Có dấu vết – nội dung cần đối chiếu]`; không đề xuất đóng cho đến khi làm rõ.
+3. Không tìm thấy mã DS tại đích dự kiến: báo `[Chưa tìm thấy dấu vết đồng bộ]`; giữ nguyên `[Chờ đồng bộ]`.
+4. Mục `[Cần nạp tài liệu gốc]` nhưng chưa có tài liệu gốc được ghi nhận tại MỤC 5: tiếp tục giữ `[Chờ đồng bộ]`, không dùng bản tóm tắt hoặc nội dung suy ra để xác nhận đã nạp.
+
+Không suy đoán việc tiếp nhận chỉ dựa trên sự giống nhau về nội dung khi thiếu mã DS. Không tự thêm mã DS vào hồ sơ, không tự xác nhận hoàn tất và không tự đóng mục DS.
+
+(c) DK mới thì chiếu theo NG1–NG2. Nếu tài liệu mới chỉ bổ sung nguồn xác nhận cho một dữ kiện đã có, giữ nguyên dữ kiện và nguồn cũ; ghi nhận nguồn mới theo mã tài liệu, không tạo mâu thuẫn giả tạo.
+
+(d) LD, LC bị ảnh hưởng thì đặt `[Cần rà lại]` và nêu độ vững có thể đổi, chưa tự đổi.
+
+(e) Cập nhật Sổ mã mốc ở PHẦN A.
 
 ### BT. Bảo toàn & cập nhật tài liệu
 
@@ -705,7 +759,12 @@ _(Mỗi bước một dòng: `n. ID — điều kiện/ghi chú`. Nhóm K luôn 
 
 1. K10 — xác lập phiên bản hiện hành: file dán lại là phiên bản mới; chỉ xác nhận đơn lẻ thì chỉ cập nhật trạng thái đúng snippet được xác nhận.
 2. T1, T8 — đối chiếu với snippet đã đề xuất: nêu snippet nào chưa thấy trong file (không tự chèn lại); báo neo mất hoặc sửa, mã trùng, PHẦN A khác bản đã đề xuất.
-3. BT5, DB5 — người dùng xác nhận đã xong việc hoặc đã đồng bộ: xuất X9 đổi trạng thái `[CV-xx]` / `[DS-xx]` tương ứng.
+3. BT5, DB5 — xử lý xác nhận trạng thái:
+   - `[CV-xx]`: áp dụng điều kiện đóng việc theo BT5.
+   - `[DS-xx]`: chỉ xuất X9 chuyển sang `[Đã đồng bộ dd/mm/yyyy]` khi xác định đúng mã DS và người dùng xác nhận nội dung tương ứng đã được tiếp nhận.
+   - Nếu người dùng đã dán file hồ sơ mới: đối chiếu dấu vết `[Đồng bộ từ DS-xx]` tại đúng đích theo DB6 trước khi đề xuất đóng.
+   - Nếu người dùng chỉ xác nhận bằng lời: phải xác định được chính xác mục DS và snippet REPLACE chứa dấu vết tương ứng đã được chèn. Không sử dụng xác nhận chung chung để đóng hàng loạt mục DS.
+   - Nếu dấu vết thiếu, sai đích hoặc nội dung không khớp: không xuất X9 đóng DS; nêu rõ điểm cần khắc phục.
 4. Không xuất snippet mới nào khác trừ khi người dùng yêu cầu hoặc có đầu vào đi kèm (xử lý bằng flow tương ứng).
 5. X10, X11.
 
